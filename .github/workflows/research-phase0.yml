@@ -1,0 +1,45 @@
+name: "Research Phase 0"
+
+on:
+  push:
+    branches:
+      - covariance-ml
+    paths:
+      - "experiments/research/**"
+      - "tests/test_research_phase0.py"
+      - "cvx/**"
+      - "experiments/data/SP500_top25_adjusted.csv"
+      - "experiments/data/ff5_no_rf.csv"
+      - ".github/workflows/research-phase0.yml"
+  workflow_dispatch:
+
+jobs:
+  phase0:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package and test dependency
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . pytest
+
+      - name: Run Phase 0 unit tests
+        run: python -m pytest tests/test_research_phase0.py -q
+
+      - name: Run Phase 0 diagnostics
+        run: python -m experiments.research.phase0
+
+      - name: Upload Phase 0 results
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase0-results
+          path: |
+            experiments/research/results/phase0_daily_diagnostics.csv
+            experiments/research/results/phase0_summary.json
