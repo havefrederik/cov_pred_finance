@@ -1,0 +1,51 @@
+name: "Research Walk-Forward"
+
+on:
+  push:
+    branches:
+      - covariance-ml
+    paths:
+      - "experiments/research/phase0.py"
+      - "experiments/research/walkforward.py"
+      - "tests/test_research_phase0.py"
+      - "tests/test_research_walkforward.py"
+      - "cvx/**"
+      - "experiments/data/SP500_top25_adjusted.csv"
+      - "experiments/data/ff5_no_rf.csv"
+      - ".github/workflows/research-walkforward.yml"
+  workflow_dispatch:
+
+jobs:
+  walkforward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install research dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . pytest scikit-learn
+
+      - name: Run research unit tests
+        run: |
+          python -m pytest \
+            tests/test_research_phase0.py \
+            tests/test_research_walkforward.py \
+            -q
+
+      - name: Run walk-forward experiment
+        run: python -m experiments.research.walkforward
+
+      - name: Upload walk-forward results
+        uses: actions/upload-artifact@v4
+        with:
+          name: walkforward-results
+          path: |
+            experiments/research/results/walkforward_daily.csv
+            experiments/research/results/walkforward_summary.json
