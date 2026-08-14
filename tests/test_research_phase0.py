@@ -35,12 +35,8 @@ def test_gmv_weights_are_fully_invested():
 def test_smoothing_path_stays_positive_definite():
     index = ["a", "b"]
     covariances = {
-        pd.Timestamp("2020-01-01"): pd.DataFrame(
-            [[1.0, 0.2], [0.2, 1.5]], index=index, columns=index
-        ),
-        pd.Timestamp("2020-01-02"): pd.DataFrame(
-            [[2.0, -0.1], [-0.1, 0.8]], index=index, columns=index
-        ),
+        pd.Timestamp("2020-01-01"): pd.DataFrame([[1.0, 0.2], [0.2, 1.5]], index=index, columns=index),
+        pd.Timestamp("2020-01-02"): pd.DataFrame([[2.0, -0.1], [-0.1, 0.8]], index=index, columns=index),
     }
     path = smooth_path(covariances, halflife=5)
     for covariance in path.values():
