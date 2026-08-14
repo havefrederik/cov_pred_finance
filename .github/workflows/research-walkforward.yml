@@ -7,8 +7,10 @@ on:
     paths:
       - "experiments/research/phase0.py"
       - "experiments/research/walkforward.py"
+      - "experiments/research/robustness.py"
       - "tests/test_research_phase0.py"
       - "tests/test_research_walkforward.py"
+      - "tests/test_research_robustness.py"
       - "cvx/**"
       - "experiments/data/SP500_top25_adjusted.csv"
       - "experiments/data/ff5_no_rf.csv"
@@ -37,10 +39,14 @@ jobs:
           python -m pytest \
             tests/test_research_phase0.py \
             tests/test_research_walkforward.py \
+            tests/test_research_robustness.py \
             -q
 
       - name: Run walk-forward experiment
         run: python -m experiments.research.walkforward
+
+      - name: Run robustness diagnostics
+        run: python -m experiments.research.robustness
 
       - name: Upload walk-forward results
         uses: actions/upload-artifact@v4
@@ -49,3 +55,4 @@ jobs:
           path: |
             experiments/research/results/walkforward_daily.csv
             experiments/research/results/walkforward_summary.json
+            experiments/research/results/walkforward_robustness.json
