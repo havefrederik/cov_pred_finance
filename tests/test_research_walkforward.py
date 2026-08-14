@@ -49,10 +49,7 @@ def test_relative_geometry_separates_scale_from_shape():
     time = pd.Timestamp("2020-01-01")
     reference_matrix = np.array([[2.0, 0.4], [0.4, 1.0]])
     reference = {time: pd.DataFrame(reference_matrix)}
-    experts = {
-        name: {time: pd.DataFrame(3.0 * reference_matrix)}
-        for name in EXPERT_NAMES
-    }
+    experts = {name: {time: pd.DataFrame(3.0 * reference_matrix)} for name in EXPERT_NAMES}
     features = relative_geometry_features(experts, reference)
     assert np.isclose(
         features.loc[time, "relgeom__10-21__log_scale"],
