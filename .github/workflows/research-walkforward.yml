@@ -8,6 +8,7 @@ on:
       - "experiments/research/phase0.py"
       - "experiments/research/walkforward.py"
       - "experiments/research/robustness.py"
+      - "experiments/research/event_diagnostics.py"
       - "tests/test_research_phase0.py"
       - "tests/test_research_walkforward.py"
       - "tests/test_research_robustness.py"
@@ -48,6 +49,9 @@ jobs:
       - name: Run robustness diagnostics
         run: python -m experiments.research.robustness
 
+      - name: Run event diagnostics
+        run: python -m experiments.research.event_diagnostics
+
       - name: Upload walk-forward results
         uses: actions/upload-artifact@v4
         with:
@@ -56,3 +60,4 @@ jobs:
             experiments/research/results/walkforward_daily.csv
             experiments/research/results/walkforward_summary.json
             experiments/research/results/walkforward_robustness.json
+            experiments/research/results/walkforward_event_diagnostics.json
