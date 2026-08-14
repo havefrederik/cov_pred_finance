@@ -20,7 +20,10 @@ def test_paleologo_shape_loss_is_scale_invariant():
 def test_paleologo_shape_loss_detects_relative_distortion():
     reference = np.eye(2)
     forecast = np.diag([1.0, 2.0])
-    assert np.isclose(paleologo_relative_shape_loss(forecast, reference), np.log(2.0))
+    assert np.isclose(
+        paleologo_relative_shape_loss(forecast, reference),
+        np.log(2.0),
+    )
 
 
 def test_gmv_weights_are_fully_invested():
