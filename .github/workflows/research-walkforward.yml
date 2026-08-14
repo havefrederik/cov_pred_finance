@@ -7,10 +7,13 @@ on:
     paths:
       - "experiments/research/phase0.py"
       - "experiments/research/walkforward.py"
+      - "experiments/research/walkforward_shape.py"
       - "experiments/research/robustness.py"
       - "experiments/research/event_diagnostics.py"
+      - "experiments/research/shape_diagnostics.py"
       - "tests/test_research_phase0.py"
       - "tests/test_research_walkforward.py"
+      - "tests/test_research_shape_change.py"
       - "tests/test_research_robustness.py"
       - "cvx/**"
       - "experiments/data/SP500_top25_adjusted.csv"
@@ -40,17 +43,21 @@ jobs:
           python -m pytest \
             tests/test_research_phase0.py \
             tests/test_research_walkforward.py \
+            tests/test_research_shape_change.py \
             tests/test_research_robustness.py \
             -q
 
       - name: Run walk-forward experiment
-        run: python -m experiments.research.walkforward
+        run: python -m experiments.research.walkforward_shape
 
       - name: Run robustness diagnostics
         run: python -m experiments.research.robustness
 
       - name: Run event diagnostics
         run: python -m experiments.research.event_diagnostics
+
+      - name: Run relative-shape diagnostics
+        run: python -m experiments.research.shape_diagnostics
 
       - name: Upload walk-forward results
         uses: actions/upload-artifact@v4
@@ -61,3 +68,4 @@ jobs:
             experiments/research/results/walkforward_summary.json
             experiments/research/results/walkforward_robustness.json
             experiments/research/results/walkforward_event_diagnostics.json
+            experiments/research/results/walkforward_shape_diagnostics.json
